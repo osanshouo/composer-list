@@ -1,30 +1,29 @@
-use lazy_static::lazy_static;
 use seed::{*, prelude::*};
 
-#[wasm_bindgen]
+mod composer;
+use composer::COMPOSERS;
+
+#[wasm_bindgen(module = "/src/copy.js")]
 extern "C" {
-    #[wasm_bindgen(js_namespace=console)]
-    fn log(s: &str);
+    #[wasm_bindgen(js_name = copyComposer)]
+    fn copy_composer();
+
+    #[wasm_bindgen(js_name = execCopy)]
+    fn exec_copy(text: &str) -> bool;
 }
 
-lazy_static!{
-    static ref COMPOSERS: Vec<&'static str> = vec![
-        "Beethoven, Ludwig van (1770.12.16-1827.3.27)",
-        "Brahms, Johaness (1833.5.7-1897.4.3)",
-        "Haydn, Franz Joseph (1732.3.31-1809.5.31)",
-    ];
-}
+const ENTER_KEY: u32 = 13;
 
 struct Model {
-    prev_text: String,
     input_text: String,
+    copy: bool,
 }
 
 impl Default for Model {
     fn default() -> Self {
         Self {
-            prev_text: "".to_string(),
             input_text: "".to_string(),
+            copy: false,
         }
     }
 }
@@ -32,41 +31,63 @@ impl Default for Model {
 #[derive(Clone)]
 enum Msg {
     ChangeInputText(String),
-    KeyPress,
+    PressEnterKey,
+    PressOtherKey,
 }
 
 fn update(msg: Msg, model: &mut Model, _: &mut impl Orders<Msg>) {
     match msg {
         Msg::ChangeInputText(text) => model.input_text = text.to_owned(),
-        Msg::KeyPress => (),
+        Msg::PressEnterKey => {
+            model.copy = true;
+            model.input_text = "".to_owned();
+        },
+        Msg::PressOtherKey => model.copy = false,
     }
 }
 
 
 fn view(model: &Model) -> impl View<Msg> {
-    div![
-        input![ 
+    vec![
+        // テキストをコピーしたらメッセージを表示する
+        if model.copy { div![ "Copied!" ] } else { div!["Input a composer name, then press [Enter]!"] },
+
+        input![
             attrs!{
                 At::Type => "text",
                 At::Placeholder => "Input a composer name, then press [Enter]",
                 At::AutoFocus => true.as_at_value(),
             },
             input_ev(Ev::Input, Msg::ChangeInputText),
-            // input_ev(Ev::KeyPress, |text| {
-            //     model.prev_text = model.input_text;
-            //     model.input_text = text;
-            //     Msg::KeyPress
-            // }),
+            keyboard_ev(Ev::KeyDown, |keyboard_event| {
+                if keyboard_event.key_code() == ENTER_KEY {
+                    copy_composer();
+                    Msg::PressEnterKey
+                } else {
+                    Msg::PressOtherKey
+                }
+            }),
         ],
-        div![
-            format!("Input Text: {}", model.input_text)
-        ],
+
+        // 作曲家リスト
         ul![
+            id!("main-list"),
             {
-                let n = model.input_text.as_bytes().len();
+                let input = model.input_text.chars().collect::<Vec<char>>();
+                let n = input.len();
+
                 COMPOSERS.iter().filter(|text| {
-                    text[0..n].eq_ignore_ascii_case(&model.input_text)
-                }).map(|text| li![text]).collect::<Vec<_>>()
+                    text.chars().take(n).zip(input.iter())
+                        .fold(true, |acc, (t, i)| acc && t.eq_ignore_ascii_case(i))
+                }).map(|text| {
+                    li![
+                        text,
+                        mouse_ev(Ev::Click, move |_| {
+                            exec_copy(*text);
+                            Msg::PressEnterKey
+                        }),
+                    ]
+                }).collect::<Vec<_>>()
             }
         ]
     ]
