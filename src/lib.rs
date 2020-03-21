@@ -5,11 +5,12 @@ use composer::COMPOSERS;
 
 #[wasm_bindgen(module = "/src/copy.js")]
 extern "C" {
-    #[wasm_bindgen(js_name = execCopy)]
-    fn exec_copy(text: &str);
-}
+    #[wasm_bindgen(js_name = execCopyTarget)]
+    fn exec_copy_target(target: web_sys::Node);
 
-const ENTER_KEY: u32 = 13;
+    #[wasm_bindgen(js_name = execCopyTarget)]
+    fn exec_copy_event_target(target: web_sys::EventTarget);
+}
 
 struct Model {
     input_length: usize,
@@ -27,14 +28,12 @@ impl Default for Model {
 
 impl Model {
     fn copy_matched_composer(&self) {
-        match COMPOSERS.iter().find(|text| {
-            text.chars().take(self.input_length)
-                .zip(self.input_text.iter())
-                .fold(true, |acc, (t, i)| acc && t.eq_ignore_ascii_case(i))
-        }) {
-            Some(text) => exec_copy(*text),
-            None => (),
-        };
+        let window = web_sys::window().unwrap();
+        let document = window.document().unwrap();
+
+        let target = document.get_element_by_id("main-list").unwrap()
+            .first_child().unwrap();
+        exec_copy_target(target);
     }
 }
 
@@ -51,11 +50,7 @@ fn update(msg: Msg, model: &mut Model, _: &mut impl Orders<Msg>) {
             model.input_text = text.chars().collect::<Vec<char>>();
             model.input_length = model.input_text.len();
         },
-        Msg::ExecCopy => {
-            model.copy_matched_composer();
-            model.input_text.clear();
-            model.input_length = 0;
-        },
+        Msg::ExecCopy => model.copy_matched_composer(),
         Msg::NoOp => (),
     }
 }
@@ -69,7 +64,7 @@ fn view(model: &Model) -> impl View<Msg> {
             // テキストをコピーしたらメッセージを表示する
             div![
                 id!("message"),
-                "Input a composer name, then press the [Enter] key!"
+                "Press the [Enter] key or click a name!"
             ],
 
             div![
@@ -77,12 +72,12 @@ fn view(model: &Model) -> impl View<Msg> {
                     attrs!{
                         At::Id => "input-area",
                         At::Type => "text",
-                        At::Placeholder => "Input a composer name, then press [Enter]",
+                        At::Placeholder => "Input a composer name",
                         At::AutoFocus => true.as_at_value(),
                     },
                     input_ev(Ev::Input, Msg::ChangeInputText),
                     keyboard_ev(Ev::KeyDown, |keyboard_event| {
-                        if keyboard_event.key_code() == ENTER_KEY {
+                        if keyboard_event.key_code() == 13 { // 13 means the [ENTER] key.
                             Msg::ExecCopy
                         } else {
                             Msg::NoOp
@@ -108,8 +103,9 @@ fn view(model: &Model) -> impl View<Msg> {
                 }).map(|text| {
                     li![
                         text,
-                        mouse_ev(Ev::Click, move |_| {
-                            exec_copy(*text);
+                        mouse_ev(Ev::Click, move |event| {
+                            let target = event.target().unwrap();
+                            exec_copy_event_target(target);
                             Msg::NoOp
                         }),
                     ]

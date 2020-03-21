@@ -16,13 +16,26 @@ export function execCopy(text) {
     tmp.select();
   
     // クリップボードにコピー
-    var result = document.execCommand("copy");
+    document.execCommand("copy");
   
     // 要素削除
     document.body.removeChild(tmp);
-  
-    // return result;
-    let input = document.querySelector("input")
-    input.value = "";
-    input.focus();
 }
+
+export function execCopyTarget(target) {
+    let text = target.textContent;
+
+    console.log(target.textContent);
+
+    // copy
+    execCopy(text);
+
+    // animation
+    target.classList.add("effect");
+    setTimeout(() => {
+        target.classList.remove("effect");
+    }, 500);
+
+    let input = document.querySelector("input")
+    input.focus();
+};
