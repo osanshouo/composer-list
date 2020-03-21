@@ -25,7 +25,7 @@ lazy_static!{
         "Bortkiewicz, Sergei (1877.2.28-1952.10.25)",
         "Boulez, Pierre (1925.3.26-2016.1.5)",
         "Bowen, York (1884.2.22-1961.11.23)",
-        "Brahms, Johaness (1833.5.7-1897.4.3)",
+        "Brahms, Johanness (1833.5.7-1897.4.3)",
         "Britten, Benjamin (1913.11.22-1976.12.4)",
         "Bruch, Max (1838.1.6-1920.10.2)",
         "Bruckner, Anton (1824.9.4-1896.10.11)",
