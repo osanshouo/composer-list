@@ -1,15 +1,3 @@
-export function copyComposer() {
-    let text = document.getElementById("main-list")
-        .firstElementChild
-        .innerText;
-
-    execCopy(text);
-
-    let input = document.querySelector("input")
-    input.value = "";
-    input.focus();
-};
-
 export function execCopy(text) {
     // https://qiita.com/simiraaaa/items/2e7478d72f365aa48356
     var tmp = document.createElement("input");
@@ -33,5 +21,8 @@ export function execCopy(text) {
     // 要素削除
     document.body.removeChild(tmp);
   
-    return result;
+    // return result;
+    let input = document.querySelector("input")
+    input.value = "";
+    input.focus();
 }
