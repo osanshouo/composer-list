@@ -4,11 +4,13 @@ lazy_static!{
     pub(crate) static ref COMPOSERS: Vec<&'static str> = vec![
         "Aho, Kalevi (1949.3.9-)",
         "Albéniz, Isaac (1860.5.29-1909.5.18)",
+        "Alfvén, Hugo (1872.5.1-1960.5.8)",
         "Alkan, Charles Valentin (1813.11.30-1888.3.29)",
         "Alyabyev, Alexander (1787.8.15-1851.3.6)",
         "Anderson, Leroy (1908.6.29-1975.5.18)",
         "Arensky, Anton (1861.7.12-1906.2.25)",
         "Ashton, Algernon (1859.12.9-1937.4.10)",
+        "Atterberg, Kurt (1887.12.12-1974.2.15)",
         "Aubert, Jacques (1689.9.30-1753.5.19)",
 
         "Bach, Johann Sebastian (1685.3.31-1750.7.28)",
@@ -17,6 +19,7 @@ lazy_static!{
         "Beethoven, Ludwig van (1770.12.16-1827.3.27)",
         "Berg, Alban (1885.2.9-1935.12.24)",
         "Berlioz, Louis Hector (1803.12.11-1869.3.8)",
+        "Bériot, Charles-Auguste de (1802.2.20-1870.4.8)",
         "Bizet, Georges (1838.10.25-1875.6.3)",
         "Boccherini, Luigi (1743.2.19-1805.5.28)",
         "Bochsa, Nicolas-Charles (1789.8.9-1856.1.6)",
@@ -30,6 +33,7 @@ lazy_static!{
         "Bruch, Max (1838.1.6-1920.10.2)",
         "Bruckner, Anton (1824.9.4-1896.10.11)",
         "Brüll, Ignaz (1846.11.7-1907.9.17)",
+        "Busoni, Ferruccio (1866.4.1-1924.7.27)",
         "Buxtehude, Dieterich (c1637-1707.5.9)",
 
         "Chausson, Ernest (1855.1.20-1899.6.10)",
@@ -78,6 +82,7 @@ lazy_static!{
         "Haydn, Franz Joseph (1732.3.31-1809.5.31)",
         "Henze, Hans Werner (1926.7.1-2012.10.27)",
         "Herzogenberg, Heinrich von (1843.6.10–1900.10.9)",
+        "Hiller, Ferdinand (1811.10.24-1885.5.12)",
         "Hindemith, Paul (1895.11.16-1963.12.28)",
         "Holst, Gustav (1874.9.21-1934.5.25)",
         "Hummel, Johann Nepomuk (1778.11.14-1837.10.17)",
@@ -148,6 +153,7 @@ lazy_static!{
         "Puccini, Giacomo (1858.12.22-1924.11.29)",
 
         "Rachmaninoff, Sergei (1873.4.1-1943.3.28)",
+        "Raff, Joachim (1822.5.27-1882.6.24/25)",
         "Ravel, Maurice (1875.3.7-1937.12.28)",
         "Reger, Max (1873.3.19-1916.5.11)",
         "Reich, Steve (1936.10.3-)",
@@ -198,6 +204,7 @@ lazy_static!{
         "Verdi, Giuseppe (1813.10.10-1901.1.27)",
         "Vierne, Louis (1870.10.8–1937.6.2)",
         "Vieuxtemps, Henri (1820.2.17-1881.1.6)",
+        "Viotti, Giovanni Battista (1755.5.12-1824.3.3)",
         "Vivaldi, Antonio (1678.3.4-1741.7.28)",
 
         "Wagner, Richard (1813.5.22-1883.2.13)",
@@ -218,6 +225,8 @@ lazy_static!{
         "芥川 也寸志 (1925.7.12-1989.1.31)",
         "伊福部 昭 (1914.5.31-2006.2.8)",
         "武満 徹 (1930.10.8-1996.2.20)",
+        "三善 晃 (1933.1.10-2013.10.4)",
+        "諸井 三郎 (1903.8.7-1977.3.24)",
         "矢代 秋雄 (1929.9.10-1976.4.9)",
     ];
 }
